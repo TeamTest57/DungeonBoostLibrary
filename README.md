@@ -1,3 +1,3 @@
 # DungeonBoostLibrary
 
-DungeonTemplateLibrary
+DungeonTemplateLibraryの準公式ライブラリ。
