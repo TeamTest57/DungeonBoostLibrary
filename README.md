@@ -1,4 +1,4 @@
-# DungeonBoostLibrary
+# [DungeonBoostLibrary](https://github.com/Kasugaccho/DungeonBoostLibrary/wiki)
 
 DungeonTemplateLibraryの準公式ライブラリ。
 
