@@ -1,5 +1,6 @@
-#include"Header.h"
+#include"Source.h"
 #include<iostream>
+#include <math>
 
 int main() {
     int a[32][32] = {{0}};
@@ -8,7 +9,7 @@ int main() {
 
     createStar(a, 32, 32, 15, 15, 11, 1);
 
-    //output(a);
+    output(a);
 
     return 0;
 
@@ -24,19 +25,26 @@ void createStar(Matrix& matrix, size_t x, size_t y, size_t star_x, size_t star_y
     vertex[0][0] = star_x;
     vertex[0][1] = star_y - star_r;
 
+
+
     for (size_t i = 1; i < stars; ++i) {
-        //double degree = (double)(i * angle * PI) / 180.0;
-        //std::cout << degree << std::endl;
-        //vertex[i][0] = 
-        //      (int64_t)((vertex[i - 1][0] * std::cos(degree)))
-        //    - (int64_t)((vertex[i - 1][1] * std::sin(degree)))
-        //    + (int64_t)(star_x * (1 - std::cos(degree)))
-        //    + (int64_t)(star_y * std::sin(degree));
-        //vertex[i][1] = (int64_t)((vertex[i - 1][0] * std::sin(degree))) + (int64_t)((vertex[i - 1][1] * std::cos(degree)));
+        double degree = (double)(i * angle * PI) / 180.0;
+        std::cout << degree << std::endl;
+        vertex[i][0] = 
+              (int64_t)((vertex[i - 1][0] * std::cos(degree)))
+            - (int64_t)((vertex[i - 1][1] * std::sin(degree)))
+            + (int64_t)(star_x * (1 - std::cos(degree)))
+            + (int64_t)(star_y * std::sin(degree));
+        vertex[i][1] = 
+            (int64_t)((vertex[i - 1][0] * std::sin(degree)))
+            + (int64_t)((vertex[i - 1][1] * std::cos(degree)))
+            - (int64_t)(star_x * std::sin(degree))
+            + (int64_t)(star_y * (1 - std::cos(degree)));
     }
 
     for (auto&& i : vertex) {
         std::cout << i[0] << ":" << i[1] << std::endl;
+        matrix[i[0]][i[1]] = value;
     }
     
 }
@@ -59,3 +67,4 @@ void matrixInit(Matrix& matrix) {
         }
     }
 }
+

@@ -9,3 +9,4 @@ void output(Matrix& matrix);
 
 template<typename Matrix>
 void matrixInit(Matrix& matrix);
+
