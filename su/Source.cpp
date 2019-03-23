@@ -1,6 +1,5 @@
 #include"Source.h"
 #include<iostream>
-#include <math>
 
 int main() {
     int a[32][32] = {{0}};
@@ -44,7 +43,7 @@ void createStar(Matrix& matrix, size_t x, size_t y, size_t star_x, size_t star_y
 
     for (auto&& i : vertex) {
         std::cout << i[0] << ":" << i[1] << std::endl;
-        matrix[i[0]][i[1]] = value;
+        matrix[i[0]][i[1]] = (int64_t)value;
     }
     
 }
