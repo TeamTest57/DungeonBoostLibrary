@@ -19,10 +19,10 @@ void createStar(Matrix& matrix, size_t x, size_t y, size_t star_x, size_t star_y
     constexpr size_t stars = 5;
     constexpr double angle = 360.0 / (double)stars;
     constexpr double PI = 3.141592653589793;
-    size_t vertex[stars][2] = {0};
+    int64_t vertex[stars][2] = {0};
 
-    vertex[0][0] = star_x;
-    vertex[0][1] = star_y - star_r;
+    vertex[0][0] = 
+    vertex[0][1] = 
 
 
 
@@ -31,17 +31,12 @@ void createStar(Matrix& matrix, size_t x, size_t y, size_t star_x, size_t star_y
         double degree = (double)(i * angle * PI) / 180.0;
         std::cout << "ƒÆ:" <<degree << std::endl;
 
-        auto cx = (vertex[i - 1][0] - star_x);
-        std::cout << "cx:" <<cx << std::endl;
-        auto cy = (vertex[i - 1][1] - star_y);
-        std::cout << "cy:" << cy << std::endl;
-
         vertex[i][0] = 
-              (size_t)((cx * std::cos(degree)))
-            - (size_t)((cy * std::sin(degree)));
+              (int64_t)((vertex[i - 1][0] * std::cos(degree)))
+            - (int64_t)((vertex[i - 1][1] * std::sin(degree)));
         vertex[i][1] = 
-              (size_t)((cx * std::cos(degree)))
-            + (size_t)((cy * std::sin(degree)));
+              (int64_t)((vertex[i - 1][0] * std::sin(degree)))
+            + (int64_t)((vertex[i - 1][1] * std::cos(degree)));
     }
 
     for (auto&& i : vertex) {
