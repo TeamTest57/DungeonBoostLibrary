@@ -19,10 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="clustering_maze.cpp" />
     <ClCompile Include="clustering_maze_main.cpp" />
     <ClCompile Include="maze.cpp" />
+    <ClCompile Include="util.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="clustering_maze.h" />
     <ClInclude Include="maze.h" />
     <ClInclude Include="util.h" />
   </ItemGroup>
