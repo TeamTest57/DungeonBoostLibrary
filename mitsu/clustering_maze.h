@@ -34,3 +34,21 @@ public:
 
 	bool isAllSame();
 };
+
+/* ClusteringMaze class
+ * Make maze
+ */
+class ClusteringMaze {
+private:
+	std::mt19937 randomEngine;
+	uint32 width, height, size;
+
+	std::vector<CellType> create();
+
+public:
+	ClusteringMaze(uint32 width, uint32 height);
+
+	Maze operator()() {
+		return Maze(width, height, create());
+	}
+};

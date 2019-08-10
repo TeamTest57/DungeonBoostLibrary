@@ -69,3 +69,38 @@ void MazeUF::uniteDifNeighbor(uint32 x, uint32 y, uint32 &outX, uint32 &outY, Di
 	outY = oY;
 	outDir = oDir;
 }
+
+ClusteringMaze::ClusteringMaze(uint32 width, uint32 height): width(width), height(height), size(width *height) {
+	std::random_device seed;
+	randomEngine = std::mt19937(seed());
+}
+
+std::vector<CellType> ClusteringMaze::create() {
+	if(width % 2 == 0) width--;
+	if(height % 2 == 0) height--;
+	
+	MazeUF sets(width / 2, height / 2);
+	uint32 randCellX, randCellY;
+
+	// base
+	std::vector<CellType> baseMaze(size, CELLTYPE_WALL);
+	for(size_t i = 0; i < width / 2; i++) {
+		for(size_t j = 0; j < height / 2; j++) {
+			baseMaze[width * (2 * j + 1) + (2 * i + 1)] = CELLTYPE_ROAD;
+		}
+	}
+
+	uint32 outX, outY;
+	Direction outDir;
+	while(!sets.isAllSame()) {
+		randCellX = randomEngine() % (width / 2);
+		randCellY = randomEngine() % (height / 2);
+
+		sets.uniteDifNeighbor(randCellX, randCellY, outX, outY, outDir);
+
+		// break wall
+		baseMaze[(2 * outY + 1) * width + (2 * outX + 1) - dirDy(outDir) * width - dirDx(outDir)] = CELLTYPE_ROAD;
+	}
+
+	return baseMaze;
+}

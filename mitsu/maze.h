@@ -20,8 +20,8 @@ public:
 	}
 
 	void print() const {
-		if(type == CELLTYPE_ROAD) std::cout << "_";
-		if(type == CELLTYPE_WALL) std::cout << "+";
+		if(type == CELLTYPE_ROAD) std::cout << "  ";
+		if(type == CELLTYPE_WALL) std::cout << "**";
 	}
 };
 

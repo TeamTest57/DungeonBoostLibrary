@@ -1,13 +1,13 @@
 #include <iostream>
-#include "maze.h"
+#include "clustering_maze.h"
 
-constexpr uint_fast32_t WIDTH = 10;
-constexpr uint_fast32_t HEIGHT = 10;
+constexpr uint_fast32_t WIDTH = 47;
+constexpr uint_fast32_t HEIGHT = 47;
 
 int main() {
-	Maze maze(WIDTH, HEIGHT);
+	ClusteringMaze maze(WIDTH, HEIGHT);
 
-	maze.print();
+	maze().print();
 
 	return 0;
 }
