@@ -18,6 +18,14 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="clustering_maze_main.cpp" />
+    <ClCompile Include="maze.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="maze.h" />
+    <ClInclude Include="util.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{CCC6D8A6-EDF4-4778-A325-AF6F5F25B835}</ProjectGuid>
@@ -122,9 +130,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Source.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

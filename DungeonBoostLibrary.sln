@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "falrnd", "falrnd\falrnd.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "su", "su\su.vcxproj", "{2EEA3894-D950-43FD-AEFE-14FC4F66B193}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mitsu", "mitsu\mitsu.vcxproj", "{CCC6D8A6-EDF4-4778-A325-AF6F5F25B835}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -51,6 +53,14 @@ Global
 		{2EEA3894-D950-43FD-AEFE-14FC4F66B193}.Release|x64.Build.0 = Release|x64
 		{2EEA3894-D950-43FD-AEFE-14FC4F66B193}.Release|x86.ActiveCfg = Release|Win32
 		{2EEA3894-D950-43FD-AEFE-14FC4F66B193}.Release|x86.Build.0 = Release|Win32
+		{CCC6D8A6-EDF4-4778-A325-AF6F5F25B835}.Debug|x64.ActiveCfg = Debug|x64
+		{CCC6D8A6-EDF4-4778-A325-AF6F5F25B835}.Debug|x64.Build.0 = Debug|x64
+		{CCC6D8A6-EDF4-4778-A325-AF6F5F25B835}.Debug|x86.ActiveCfg = Debug|Win32
+		{CCC6D8A6-EDF4-4778-A325-AF6F5F25B835}.Debug|x86.Build.0 = Debug|Win32
+		{CCC6D8A6-EDF4-4778-A325-AF6F5F25B835}.Release|x64.ActiveCfg = Release|x64
+		{CCC6D8A6-EDF4-4778-A325-AF6F5F25B835}.Release|x64.Build.0 = Release|x64
+		{CCC6D8A6-EDF4-4778-A325-AF6F5F25B835}.Release|x86.ActiveCfg = Release|Win32
+		{CCC6D8A6-EDF4-4778-A325-AF6F5F25B835}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
