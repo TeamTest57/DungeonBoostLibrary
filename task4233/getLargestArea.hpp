@@ -29,5 +29,5 @@ public:
 templace <class Type, size_t width, size_t height>
 class GetLargestRectArea: public GetLargestRectInHist {
 public:
-  GetLargestRectSquare(std::array< std::array<Type, width>, height > matrix, Type searchElem);
+  GetLargestRectArea(std::array< std::array<Type, width>, height > matrix, Type searchElem);
 };
