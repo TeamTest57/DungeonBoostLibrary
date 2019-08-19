@@ -14,12 +14,6 @@ bool chmax(Type &a, constexpr Type &b) {
   return 0;
 }
 
-tempalce <class Type, size_t width>
-class GetLargestRectAreaInHist {
-public:
-  GetLargestRectAreaInHist(std::array< Type, width > heightData, size_t size);
-};
-
 templace <class Type, size_t width, size_t height>
 class GetLargestSquareArea {
 public:
@@ -30,4 +24,5 @@ templace <class Type, size_t width, size_t height>
 class GetLargestRectArea: public GetLargestRectInHist {
 public:
   GetLargestRectArea(std::array< std::array<Type, width>, height > matrix, Type searchElem);
+  GetLargestRectAreaInHist(std::array< Type, width > heightCnt);
 };
