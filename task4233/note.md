@@ -17,16 +17,16 @@
  - このヒストグラム内に存在する最大の長方形の面積を求めよ
 
 ## Editorial
- - `Rectangle{ width, xPos }`を用意して, その情報をstackに入れることで更新していく
+ - `Rectangle{ height, xPos }`を用意して, その情報をstackに入れることで更新していく
  - 遷移
-   - stackが空の場合　もしくは　stackTopのwidthが今見ている場所のwidthよりも小さい場合
-     - stackに今見ている場所のwidth, xPosをpushする
-   - stackTopのwidthが, 今見ている場所のwidthと等しい場合
+   - stackが空の場合　もしくは　stackTopのheightが今見ている場所のheightよりも小さい場合
+     - stackに今見ている場所のheight, xPosをpushする
+   - stackTopのheightが, 今見ている場所のheightと等しい場合
      - 何もしない(過去の値を引き継ぐ)
-   - stackTopのwidthが, 今見ている場所のwidthよりも大きい場合
-     - stackTopのwidthが, 今見ている場所のwidth以上である限りその面積を計算して最大値を更新する
-     - 更新終了後, stackに今見ている場所のwidth, xPosをpushする
-     - xPosは最後にstackTopから取り出したwidthの値とする
+   - stackTopのheightが, 今見ている場所のheightよりも大きい場合
+     - stackTopのheightが, 今見ている場所のheight以上である限りその面積を計算して最大値を更新する
+     - 更新終了後, stackに今見ている場所のheight, xPosをpushする
+     - xPosは最後にstackTopから取り出したheightの値とする
  - こういうdpもあるんですね
 
 # 長方形探索
