@@ -67,7 +67,8 @@ public:
           heightCnt[hi][wi] = 0;
           continue;
         }
-        heightCnt[hi][wi] = matrix[hi][wi] == matrix[hi-1][wi] ? (heightCnt[hi-1][wi] + 1) : 1;
+        if (hi>0)
+          heightCnt[hi][wi] = matrix[hi][wi] == matrix[hi-1][wi] ? (heightCnt[hi-1][wi] + 1) : 1;
       }
     }
 
