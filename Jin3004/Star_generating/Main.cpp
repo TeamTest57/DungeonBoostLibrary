@@ -1,6 +1,8 @@
 #include <Siv3D.hpp>
 #include <array>
+#include <vector>
 #include <tuple>
+#include <queue>
 
 constexpr double pi = 3.141592;
 constexpr size_t scale = 8;
@@ -17,15 +19,23 @@ struct Line{
 };
 
 template <typename Matrix>
-void createStar(Matrix &matrix, size_t x, size_t y, size_t star_x, size_t star_y, size_t star_r, double theta, size_t value)
-{
+void createStar(Matrix &matrix, size_t x, size_t y, size_t star_x, size_t star_y, size_t star_r, double theta, size_t value){
 
   std::array<::Line, 5> lines;
+  //Matrix cnt;
+  //for(size_t i = 0; i < x; ++i)for(size_t j = 0; j < y; ++j){
+  //  matrix[y][x] = 0;
+  //}
+  //^Initialized all the elements by zero.
+
+  int8_t dx[] = {0, 1, 1, 1, 0, -1, -1, -1}, dy[] = {-1, -1, 0, 1, 1, 1, 0, -1};
+
+  std::vector<std::vector<int8_t>> states(y, std::vector<int8_t>(x, 0b00000));
+
   {
-  
+
     std::array<std::tuple<double, double>, 5> vertex;
-    for (size_t i = 0; i < 5; ++i)
-    {
+    for (size_t i = 0; i < 5; ++i){
       double rad = theta + toRadian(i * (360 / 5) + 270);
       double tmp_x = std::round(star_r * std::cos(rad) + star_x), tmp_y = std::round(star_r * std::sin(rad) + star_y);
       vertex[i] = {tmp_x, tmp_y};
@@ -42,32 +52,85 @@ void createStar(Matrix &matrix, size_t x, size_t y, size_t star_x, size_t star_y
     };
 
     for (size_t i = 0; i < 3; ++i){
-      if(i < 2){
+      if (i < 2)
+      {
         make_line(i, i + 2);
         make_line(i, i + 3);
-      }else{
+      }
+      else
+      {
         make_line(i, i + 2);
       }
     }
-  }//Set each line.
+  } //Set each line.
 
   for (size_t i = 0; i < 5; ++i){
+
     ::Line &line = lines[i];
     for (size_t x = std::round(std::min(line.x[0], line.x[1])), prev = -1; x <= std::round(std::max(line.x[0], line.x[1])); ++x){
+
       y = std::round(line.inclination * x + line.section);
-      matrix[y][x] += value;
-      if(prev != -1){
-        if(y < prev - 1 || prev + 1 < y){
+      states[y][x] |= (1 << i);
+
+      if (prev != -1){
+        if (y < prev - 1 || prev + 1 < y){
           bool flag = (prev < y);
-          for (size_t i = (flag ? std::min(prev + 1, y - 1) : std::min(prev - 1, y + 1)); i <= (flag ? std::max(prev + 1, y - 1) : std::max(prev - 1, y + 1)); ++i)
-          {
-            matrix[i][x] += value;
+          for (size_t j = (flag ? std::min(prev + 1, y - 1) : std::min(prev - 1, y + 1)); j <= (flag ? std::max(prev + 1, y - 1) : std::max(prev - 1, y + 1)); ++j){
+            states[j][x] |= (1 << i);
           }
         }
       }
       prev = y;
     }
   }
+
+  for (size_t i = 0; i < 5; ++i){
+
+    int8_t cur_state = states[lines[i].y[0]][lines[i].x[0]], next_state;
+    size_t cur_x = lines[i].x[0], cur_y = lines[i].y[0], next_x, next_y;
+
+    bool flag = false;//Whether the current pos is inside the star.
+
+    while (cur_state & (1 << (i + 1))){
+      
+      for (size_t i = 0; i < 8; ++i){
+
+        next_x = cur_x + dx[i], next_y = cur_y + dy[i], next_state = states[next_y][next_x];
+
+        if (next_state & (1 << i)){//If i-th flag is true, check whether the other flags are true.
+          for(int j = i; j < 5; ++j){
+            if(next_state & (1 << j))flag = ~flag;
+          }
+        }
+      }
+      //Check the point is the crossed point.
+
+      if(!flag)matrix[cur_y][cur_x] = value;
+
+      cur_x = next_x, cur_y = next_y, cur_state = next_state;
+      //Update variable `state`.
+
+    }
+  }
+
+  //std::queue<std::pair<size_t, size_t>> q;
+  //q.push(std::make_pair(star_y, star_x));
+  //while (!q.empty())
+  //{
+  //  //auto [cur_y, cur_x] = q.front(); q.pop();
+  //  size_t cur_y = q.front().first, cur_x = q.front().second;
+  //  q.pop();
+  //  for (size_t i = 0; i < 8; ++i)
+  //  {
+  //    size_t next_y = cur_y + dy[i], next_x = cur_x + dx[i];
+  //    if (matrix[next_y][next_x] == 1)
+  //      continue;
+  //    matrix[next_y][next_x] = value;
+  //    q.push(std::make_pair(next_y, next_x));
+  //  }
+  //}
+
+  //}//Run BFS.
 }
 
 void Main()
@@ -78,7 +141,9 @@ void Main()
   Scene::SetBackground(Palette::White);
 
   std::array<std::array<int32_t, WIDTH>, HEIGHT> matrix; //matrix[y][x]
-  for(auto& mat : matrix)for(auto& m : mat)m = 0;//Initialize all the elements as zero.
+  for (auto &mat : matrix)
+    for (auto &m : mat)
+      m = 0; //Initialize all the elements as zero.
 
   createStar(matrix, WIDTH, HEIGHT, 31, 31, 25, 1.0, 1);
 
@@ -86,10 +151,12 @@ void Main()
 
   while (System::Update())
   {
-    for (size_t x = 0; x < WIDTH; ++x){
+    for (size_t x = 0; x < WIDTH; ++x)
+    {
       s3d::Line(x * scale, 0, x * scale, HEIGHT * scale).draw(Palette::Black);
     }
-    for (size_t y = 0; y < HEIGHT; ++y){
+    for (size_t y = 0; y < HEIGHT; ++y)
+    {
       s3d::Line(0, y * scale, WIDTH * scale, y * scale).draw(Palette::Black);
     }
     //Draw a grid.
@@ -98,8 +165,9 @@ void Main()
     {
       for (size_t j = 0; j < HEIGHT; ++j)
       {
-        if(matrix[j][i] >= 1)Rect(i * scale, j * scale, scale, scale).draw(colors[matrix[j][i]]);
+        if (matrix[j][i] >= 1)
+          Rect(i * scale, j * scale, scale, scale).draw(matrix[j][i] ? Palette::Black : Palette::White);
       }
-      }
+    }
   };
 }
