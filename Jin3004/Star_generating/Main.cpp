@@ -7,10 +7,6 @@
 constexpr double pi = 3.141592;
 constexpr size_t scale = 8;
 
-constexpr double toRadian(size_t angle){
-  return (double)(angle * pi / 180);
-}
-
 struct Line{
   double x[2], y[2];
   double inclination;
@@ -22,17 +18,14 @@ template <typename Matrix>
 void createStar(Matrix &matrix, size_t x, size_t y, size_t star_x, size_t star_y, size_t star_r, double theta, size_t value){
 
   std::array<::Line, 5> lines;
-  //Matrix cnt;
-  //for(size_t i = 0; i < x; ++i)for(size_t j = 0; j < y; ++j){
-  //  matrix[y][x] = 0;
-  //}
-  //^Initialized all the elements by zero.
 
   int8_t dx[] = {0, 1, 1, 1, 0, -1, -1, -1}, dy[] = {-1, -1, 0, 1, 1, 1, 0, -1};
 
   std::vector<std::vector<int8_t>> states(y, std::vector<int8_t>(x, 0b00000));
 
   {
+
+    constexpr auto toRadian = [=](size_t angle) -> double {return (double)(angle * pi / 180);};
 
     std::array<std::tuple<double, double>, 5> vertex;
     for (size_t i = 0; i < 5; ++i){
