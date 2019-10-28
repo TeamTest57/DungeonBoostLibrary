@@ -71,12 +71,14 @@ void createStar(Matrix &matrix, size_t x, size_t y, size_t star_x, size_t star_y
 
       y = std::round(line.inclination * x + line.section);
       states[y][x] |= (1 << i);
+      //maybe go well
 
       if (prev != -1){
         if (y < prev - 1 || prev + 1 < y){
           bool flag = (prev < y);
           for (size_t j = (flag ? std::min(prev + 1, y - 1) : std::min(prev - 1, y + 1)); j <= (flag ? std::max(prev + 1, y - 1) : std::max(prev - 1, y + 1)); ++j){
             states[j][x] |= (1 << i);
+            //maybe go well
           }
         }
       }
@@ -86,26 +88,26 @@ void createStar(Matrix &matrix, size_t x, size_t y, size_t star_x, size_t star_y
 
   for (size_t i = 0; i < 5; ++i){
 
-    int8_t cur_state = states[lines[i].y[0]][lines[i].x[0]], next_state;
-    size_t cur_x = lines[i].x[0], cur_y = lines[i].y[0], next_x, next_y;
+    int8_t cur_state = states[std::round(lines[i].y[0])][std::round(lines[i].x[0])], next_state;
+    size_t cur_x = std::round(lines[i].x[0]), cur_y = std::round(lines[i].y[0]), next_x, next_y;
 
     bool flag = false;//Whether the current pos is inside the star.
 
-    while (cur_state & (1 << (i + 1))){
+    while (cur_state & (1 << i)){
       
-      for (size_t i = 0; i < 8; ++i){
+      for (size_t j = 0; j < 8; ++j){
 
-        next_x = cur_x + dx[i], next_y = cur_y + dy[i], next_state = states[next_y][next_x];
+        next_x = cur_x + dx[j], next_y = cur_y + dy[j], next_state = states[next_y][next_x];
 
         if (next_state & (1 << i)){//If i-th flag is true, check whether the other flags are true.
-          for(int j = i; j < 5; ++j){
-            if(next_state & (1 << j))flag = ~flag;
+          for(int k = i + 1; k < 5; ++k){
+            if(next_state & (1 << k))flag = ~flag;
           }
         }
       }
       //Check the point is the crossed point.
 
-      if(!flag)matrix[cur_y][cur_x] = value;
+      if(!flag)matrix[next_y][next_x] = value;
 
       cur_x = next_x, cur_y = next_y, cur_state = next_state;
       //Update variable `state`.
