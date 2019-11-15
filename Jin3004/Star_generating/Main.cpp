@@ -18,6 +18,10 @@ constexpr void createStar(Matrix& matrix, size_t width, size_t height, size_t st
     return angle * pi / 180;
   };
 
+  constexpr auto Abs = [=](size_t n) -> size_t{
+    return n > 0 ? n : -n;
+  };
+
   for(size_t i = 0; i < 5; ++i){
     const double rad = toRadian(72 * i + 270) + theta;
     const size_t ver_x = std::round((double)(star_x + std::cos(rad) * star_r)), ver_y = std::round((double)(star_y + std::sin(rad) * star_r));
@@ -26,6 +30,38 @@ constexpr void createStar(Matrix& matrix, size_t width, size_t height, size_t st
 
   //Second, caluculate each line and assign each element which is on the line with `value`.
   std::array<std::pair<int8_t, int8_t>, 5> lines = {std::make_pair(0, 2), std::make_pair(0, 3), std::make_pair(1, 3), std::make_pair(1, 4), std::make_pair(2, 4)};
+  
+  for(const auto& l : lines){
+
+    double rate = (vertexes[l.second].y - vertexes[l.first].y) / (vertexes[l.second].x - vertexes[l.first].x);
+    double section = vertexes[l.first].y - vertexes[l.first].x * rate;
+
+    size_t begin_x = 0, end_x = 0;
+    if(std::round(vertexes[l.first].x) > std::round(vertexes[l.second].x)){
+      begin_x = std::round(vertexes[l.second].x);
+      end_x = std::round(vertexes[l.first].x);
+    }else{
+      begin_x = std::round(vertexes[l.first].x);
+      end_x = std::round(vertexes[l.second].x);
+    }
+
+    size_t pre_y{};
+
+    for(size_t x = begin_x; x <= end_x; ++x){
+      size_t new_y = std::round(x * rate + section);
+      matrix[new_y][x] = value;
+
+      if(x != begin_x && Abs(pre_y - new_y) >= 1){
+        for(size_t i = std::min<size_t>(pre_y, new_y) + 1; i <= std::max<size_t>(pre_y, new_y) - 1; ++i){
+          matrix[i][x] = value;
+        }
+      }
+
+      pre_y = new_y;
+
+    }
+
+  }
 
 }
 
