@@ -5,13 +5,9 @@
 template<typename Matrix>
 constexpr void createStar(Matrix& matrix, size_t width, size_t height, size_t star_x, size_t star_y, size_t star_r, double theta, size_t value){
 
-  // First, calculate each vertex.
-  struct Pos{
-    size_t x, y;
-    Pos() = default;
-  };
 
-  std::array<Pos, 5> vertexes;
+  //-----------------------------
+
 
   constexpr auto toRadian = [=](double angle) -> double{
     constexpr double pi = 3.141592;
@@ -22,11 +18,27 @@ constexpr void createStar(Matrix& matrix, size_t width, size_t height, size_t st
     return n > 0 ? n : -n;
   };
 
+
+  //-----------------------------
+
+
+  // First, calculate each vertex.
+  struct Pos{
+    double x, y;
+    Pos() = default;
+  };
+
+  std::array<Pos, 5> vertexes;
+
   for(size_t i = 0; i < 5; ++i){
     const double rad = toRadian(72 * i + 270) + theta;
-    const size_t ver_x = std::round((double)(star_x + std::cos(rad) * star_r)), ver_y = std::round((double)(star_y + std::sin(rad) * star_r));
+    const double ver_x = (double)(star_x + std::cos(rad) * star_r), ver_y = (double)(star_y + std::sin(rad) * star_r);
     vertexes[i] = {ver_x, ver_y};
   }
+
+
+  //-----------------------------
+
 
   //Second, caluculate each line and assign each element which is on the line with `value`.
   std::array<std::pair<int8_t, int8_t>, 5> lines = {std::make_pair(0, 2), std::make_pair(0, 3), std::make_pair(1, 3), std::make_pair(1, 4), std::make_pair(2, 4)};
@@ -34,25 +46,20 @@ constexpr void createStar(Matrix& matrix, size_t width, size_t height, size_t st
   for(const auto& l : lines){
 
     double rate = (vertexes[l.second].y - vertexes[l.first].y) / (vertexes[l.second].x - vertexes[l.first].x);
-    double section = vertexes[l.first].y - vertexes[l.first].x * rate;
+    double section = vertexes[l.first].y - rate * vertexes[l.first].x;
 
-    size_t begin_x = 0, end_x = 0;
-    if(std::round(vertexes[l.first].x) > std::round(vertexes[l.second].x)){
-      begin_x = std::round(vertexes[l.second].x);
-      end_x = std::round(vertexes[l.first].x);
-    }else{
-      begin_x = std::round(vertexes[l.first].x);
-      end_x = std::round(vertexes[l.second].x);
-    }
+    size_t begin_x = std::round(vertexes[l.second].x), end_x = std::round(vertexes[l.first].x);
+    if(begin_x > end_x)std::swap(begin_x, end_x);
 
+    size_t max_y = std::round(std::max(vertexes[l.first].y, vertexes[l.second].y));
     size_t pre_y{};
 
     for(size_t x = begin_x; x <= end_x; ++x){
-      size_t new_y = std::round(x * rate + section);
+      size_t new_y = std::min(max_y, static_cast<size_t>(std::round(rate * x + section)));
       matrix[new_y][x] = value;
 
       if(x != begin_x && Abs(pre_y - new_y) >= 1){
-        for(size_t i = std::min<size_t>(pre_y, new_y) + 1; i <= std::max<size_t>(pre_y, new_y) - 1; ++i){
+        for(size_t i = std::min(pre_y, new_y) + 1; i <= std::max(pre_y, new_y) - 1; ++i){
           matrix[i][x] = value;
         }
       }
@@ -77,7 +84,7 @@ void Main(){
     m2 = 0;
   }
 
-  createStar(matrix, WIDTH, HEIGHT, 31, 31, 25, 0.0, 1);
+  createStar(matrix, WIDTH, HEIGHT, 31, 31, 25, 1.0, 1);
 
   while(System::Update()){
 
